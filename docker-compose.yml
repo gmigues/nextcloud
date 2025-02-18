@@ -1,0 +1,40 @@
+services:
+  nextcloud:
+    image: nextcloud
+    container_name: next
+    environment:
+      - MYSQL_HOST=
+      - MYSQL_DATABASE=
+      - MYSQL_USER=
+      - MYSQL_PASSWORD=
+    ports:
+      - 8080:80
+    volumes:
+      - nextcloud_data:/var/www/html
+    depends_on:
+      - mariadb
+    networks:
+      - net_cloudv2
+
+  mariadb:
+    image: mariadb:10.5
+    container_name: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_DATABASE=
+      - MYSQL_USER=
+      - MYSQL_PASSWORD=
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - net_cloudv2
+
+volumes:
+  mariadb_data:
+  nextcloud_data:
+
+
+networks:
+  net_cloudv2:
+    driver: bridge
+
